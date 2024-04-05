@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: nginx1
+  name: nginx1
+  namespace: test
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 2
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: nginx1
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: nginx1
+    spec:
+      containers:
+      - image: nginx
+        imagePullPolicy: Always
+        name: nginx1
+        ports:
+        - containerPort: 80
+          protocol: TCP
+        resources: {}
+      terminationGracePeriodSeconds: 30
+status:
+  availableReplicas: 2
